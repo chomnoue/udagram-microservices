@@ -1,17 +1,17 @@
 import cors from 'cors';
-import express from 'express';
-import {sequelize} from './sequelize';
-
-import {IndexRouter} from './controllers/v0/index.router';
+import express, {Router} from 'express';
+import {getSequelize} from './sequelize';
 
 import bodyParser from 'body-parser';
-import {config} from './config/config';
-import {V0_FEED_MODELS, V0_USER_MODELS} from './controllers/v0/model.index';
+import {DBConfig} from './config';
+import {Model} from 'sequelize-typescript';
+import {Server} from "http";
 
 
-(async () => {
-  await sequelize.addModels(V0_FEED_MODELS);
-  await sequelize.addModels(V0_USER_MODELS);
+export async function startServer(config: DBConfig, models: Array<typeof Model>, url: string, router: Router):
+    Promise<Server> {
+  const sequelize = getSequelize(config);
+  await sequelize.addModels(models);
   await sequelize.sync();
 
   const app = express();
@@ -26,10 +26,10 @@ import {V0_FEED_MODELS, V0_USER_MODELS} from './controllers/v0/model.index';
       'X-Access-Token', 'Authorization',
     ],
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-    origin: config.url,
+    origin: url,
   }));
 
-  app.use('/api/v0/', IndexRouter);
+  app.use('/api/v0/', router);
 
   // Root URI call
   app.get( '/', async ( req, res ) => {
@@ -38,8 +38,8 @@ import {V0_FEED_MODELS, V0_USER_MODELS} from './controllers/v0/model.index';
 
 
   // Start the Server
-  app.listen( port, () => {
-    console.log( `server running ${config.url}` );
+  return app.listen( port, () => {
+    console.log( `server running http://localhost:${port}` );
     console.log( `press CTRL+C to stop server` );
   } );
-})();
+}

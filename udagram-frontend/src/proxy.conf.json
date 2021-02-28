@@ -1,0 +1,10 @@
+{
+  "/api/v0/users": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/api/v0/feed": {
+    "target": "http://localhost:8081",
+    "secure": false
+  }
+}
