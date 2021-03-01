@@ -8,7 +8,7 @@ import {Model} from 'sequelize-typescript';
 import {Server} from "http";
 
 
-export async function startServer(config: DBConfig, models: Array<typeof Model>, url: string, router: Router):
+export async function startServer<M extends typeof Model> (config: DBConfig, models: M[], url: string, router: Router):
     Promise<Server> {
   const sequelize = getSequelize(config);
   await sequelize.addModels(models);

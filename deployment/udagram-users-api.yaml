@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: udagram-users-api
+  labels:
+    app: udagram-users-api
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: udagram-users-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udagram-users-api
+  labels:
+    app: udagram-users-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udagram-users-api
+  template:
+    metadata:
+      labels:
+        app: udagram-users-api
+    spec:
+      containers:
+      - name: udagram-users-api
+        image: chomnoue/udagram-users-api:IMAGEVERSION
+        ports:
+        - containerPort: 80
+        env:
+        - name: PORT
+          value: 80
+        - name: URL
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-common-config
+              key: url
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-common-config
+              key: postgres_host
+        - name: POSTGRES_DB
+          value: users
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: postgres_username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: postgres_password
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: jwt_secret

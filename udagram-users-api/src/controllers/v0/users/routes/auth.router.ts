@@ -8,7 +8,7 @@ import * as jwt from 'jsonwebtoken';
 import {NextFunction} from 'connect';
 
 import * as EmailValidator from 'email-validator';
-import {checkJwtToken} from 'udagram-common';
+import {checkJwtToken} from '@chomnoue/udagram-common';
 const router: Router = Router();
 
 

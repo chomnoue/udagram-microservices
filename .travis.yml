@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - 14
+
+
+jobs:
+  include:
+    - stage: build common module
+      script:
+        - cd udagram-common
+        - npm version 0.0.$TRAVIS_BUILD_NUMBER
+        - npm install
+        - npm run lint
+        - npm run build
+      deploy:
+        provider: npm
+        email: $NPM_EMAIL
+        api_key: $NPM_KEY
+    

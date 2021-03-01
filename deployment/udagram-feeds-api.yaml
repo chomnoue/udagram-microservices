@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: udagram-feeds-api
+  labels:
+    app: udagram-feeds-api
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: udagram-feeds-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udagram-feeds-api
+  labels:
+    app: udagram-feeds-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udagram-feeds-api
+  template:
+    metadata:
+      labels:
+        app: udagram-feeds-api
+    spec:
+      containers:
+      - name: udagram-feeds-api
+        image: chomnoue/udagram-feeds-api:IMAGEVERSION
+        ports:
+        - containerPort: 80
+        env:
+        - name: PORT
+          value: 80
+        - name: URL
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-common-config
+              key: url
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-common-config
+              key: postgres_host
+        - name: POSTGRES_DB
+          value: feeds
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: postgres_username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: postgres_password
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: jwt_secret
+        - name: AWS_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-common-config
+              key: aws_media_bucket
+        - name: AWS_PROFILE
+          value: "DEPLOYED"

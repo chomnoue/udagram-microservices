@@ -1,12 +1,13 @@
 {
-  "name": "udagram-common",
-  "version": "2.0.0",
+  "name": "@chomnoue/udagram-common",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.{js,ts,tsx}"
   },
   "keywords": [],
   "author": "Alain Chomnoue",
