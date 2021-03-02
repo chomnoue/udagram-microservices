@@ -16,13 +16,17 @@ jobs:
     - stage: build users api
       before_script:
         - export BUILD_DIR=udagram-users-api
-      script:
+      script: &build_api
         - cd $BUILD_DIR
         - npm install
         - npm run lint
         - npm run build
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TRAVIS_BUILD_NUMBER .
-        - docker push $DOCKER_USERNAME/$BUILD_DIR:$TRAVIS_BUILD_NUMBER
+        - docker push $DOCKER_USERNAME/$BUILD_DIR:0.0.$TRAVIS_BUILD_NUMBER
+    - stage: build feeds api
+      before_script:
+        - export BUILD_DIR=udagram-feeds-api
+      script: *build_api
 
     
