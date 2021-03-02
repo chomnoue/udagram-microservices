@@ -16,4 +16,6 @@ jobs:
         provider: npm
         email: $NPM_EMAIL
         api_key: $NPM_KEY
+        on:
+          all_branches: true
     
