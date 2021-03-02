@@ -22,8 +22,9 @@ jobs:
         - npm run lint
         - npm run build
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TRAVIS_BUILD_NUMBER .
-        - docker push $DOCKER_USERNAME/$BUILD_DIR:0.0.$TRAVIS_BUILD_NUMBER
+        - export TAG=0.0.$TRAVIS_BUILD_NUMBER
+        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TAG .
+        - docker push $DOCKER_USERNAME/$BUILD_DIR:$TAG
     - stage: build feeds api
       before_script:
         - export BUILD_DIR=udagram-feeds-api
@@ -38,8 +39,9 @@ jobs:
         - npm run lint
         - ionic build --prod
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TRAVIS_BUILD_NUMBER .
-        - docker push $DOCKER_USERNAME/$BUILD_DIR:0.0.$TRAVIS_BUILD_NUMBER
+        - export TAG=0.0.$TRAVIS_BUILD_NUMBER
+        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TAG .
+        - docker push $DOCKER_USERNAME/$BUILD_DIR:$TAG
 
 
     
