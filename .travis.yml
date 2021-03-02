@@ -7,7 +7,7 @@ jobs:
   include:
     - stage: build front end
       before_script:
-        - export BUILD_DIR=udagram-users-api
+        - export BUILD_DIR=udagram-frontend
       script: &build_api
         - cd $BUILD_DIR
         - npm install
