@@ -18,4 +18,16 @@ jobs:
         api_key: $NPM_KEY
         on:
           all_branches: true
+    - stage: build users api
+      before_script:
+        - export BUILD_DIR=udagram-users-api
+      script:
+        - cd $BUILD_DIR
+        - npm install
+        - npm run lint
+        - npm run build
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TRAVIS_BUILD_NUMBER .
+        - docker push $DOCKER_USERNAME/$BUILD_DIR:$TRAVIS_BUILD_NUMBER
+
     
