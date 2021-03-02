@@ -12,12 +12,7 @@ jobs:
         - npm install
         - npm run lint
         - npm run build
-      deploy:
-        provider: npm
-        email: $NPM_EMAIL
-        api_key: $NPM_KEY
-        on:
-          all_branches: true
+        - npm publish
     - stage: build users api
       before_script:
         - export BUILD_DIR=udagram-users-api
