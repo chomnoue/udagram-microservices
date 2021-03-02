@@ -28,5 +28,18 @@ jobs:
       before_script:
         - export BUILD_DIR=udagram-feeds-api
       script: *build_api
+    - stage: build front end
+      before_script:
+        - export BUILD_DIR=udagram-users-api
+      script: &build_api
+        - cd $BUILD_DIR
+        - npm install
+        - npm install -g ionic
+        - npm run lint
+        - ionic build --prod
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TRAVIS_BUILD_NUMBER .
+        - docker push $DOCKER_USERNAME/$BUILD_DIR:0.0.$TRAVIS_BUILD_NUMBER
+
 
     
