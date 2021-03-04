@@ -34,7 +34,7 @@ spec:
         - containerPort: 80
         env:
         - name: PORT
-          value: 80
+          value: "80"
         - name: URL
           valueFrom:
             configMapKeyRef:
@@ -46,7 +46,7 @@ spec:
               name: udagram-common-config
               key: postgres_host
         - name: POSTGRES_DB
-          value: users
+          value: "users"
         - name: POSTGRES_USERNAME
           valueFrom:
             secretKeyRef:

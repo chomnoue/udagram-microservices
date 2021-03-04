@@ -11,9 +11,7 @@ jobs:
       script: &build_api
         - cd $BUILD_DIR
         - npm install
-        - npm install -g ionic
         - npm run lint
-        - npm run buildProd
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - export TAG=0.0.$TRAVIS_BUILD_NUMBER
         - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TAG .
@@ -42,6 +40,18 @@ jobs:
       before_script:
         - export BUILD_DIR=udagram-feeds-api
       script: *build_api
+    - stage: deploy to kubernetes
+      sudo: required
+      before_install:
+        - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+        - chmod +x kubectl && sudo mv kubectl /usr/local/bin/kubectl
+      script:
+        - echo "$KUBERNETES_CLUSTER_CERTIFICATE" | base64 --decode > cert.crt
+        - sh -x deployment/deploy.sh
+      branches:
+        only:
+          - master
+          - develop
 
 
     

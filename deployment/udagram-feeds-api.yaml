@@ -34,7 +34,7 @@ spec:
         - containerPort: 80
         env:
         - name: PORT
-          value: 80
+          value: "80"
         - name: URL
           valueFrom:
             configMapKeyRef:
@@ -46,7 +46,7 @@ spec:
               name: udagram-common-config
               key: postgres_host
         - name: POSTGRES_DB
-          value: feeds
+          value: "feeds"
         - name: POSTGRES_USERNAME
           valueFrom:
             secretKeyRef:
@@ -69,3 +69,18 @@ spec:
               key: aws_media_bucket
         - name: AWS_PROFILE
           value: "DEPLOYED"
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: aws_access_key_id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: udagram-common-secrets
+              key: aws_secret_access_key
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-common-config
+              key: aws_region
