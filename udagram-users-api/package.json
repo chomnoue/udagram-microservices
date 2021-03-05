@@ -17,7 +17,7 @@
   "author": "Alain Chomnoue",
   "license": "ISC",
   "dependencies": {
-    "@chomnoue/udagram-common": "0.0.1",
+    "@chomnoue/udagram-common": "0.0.133",
     "@types/bcrypt": "^3.0.0",
     "@types/jsonwebtoken": "^8.3.2",
     "bcrypt": "^3.0.6",
