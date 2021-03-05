@@ -32,6 +32,11 @@ spec:
         image: chomnoue/udagram-feeds-api:IMAGEVERSION
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
         env:
         - name: PORT
           value: "80"
