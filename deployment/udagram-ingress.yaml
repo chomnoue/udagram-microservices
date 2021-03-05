@@ -12,5 +12,5 @@ spec:
         paths:
           - path: /*
             backend:
-              serviceName: udagram-frontend
+              serviceName: udagram-reverseproxy
               servicePort: 80

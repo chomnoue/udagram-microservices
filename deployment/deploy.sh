@@ -10,6 +10,8 @@ deploy_to_kubernetes()
 	kubectl --kubeconfig=/dev/null  --server=$KUBERNETES_SERVER  --certificate-authority=cert.crt --token=$KUBERNETES_TOKEN -n udagramdev set image deployment/$MODULE $MODULE=$IMAGE
 }
 
+deploy_to_kubernetes udagram-reverseproxy
 deploy_to_kubernetes udagram-frontend
 deploy_to_kubernetes udagram-users-api
 deploy_to_kubernetes udagram-feeds-api
+kubectl --kubeconfig=/dev/null  --server=$KUBERNETES_SERVER  --certificate-authority=cert.crt --token=$KUBERNETES_TOKEN -n udagramdev apply -f deployment/udagram-ingress.yaml

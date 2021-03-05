@@ -5,17 +5,20 @@ node_js:
 
 jobs:
   include:
+    - stage: build reverseproxy
+      before_script:
+        - export BUILD_DIR=udagram-reverseproxy
+      script:
+        - cd $BUILD_DIR
+        - sh -x ../docker_build.sh
     - stage: build front end
       before_script:
         - export BUILD_DIR=udagram-frontend
-      script: &build_api
+      script:
         - cd $BUILD_DIR
         - npm install
         - npm run lint
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - export TAG=0.0.$TRAVIS_BUILD_NUMBER
-        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TAG .
-        - docker push $DOCKER_USERNAME/$BUILD_DIR:$TAG
+        - sh -x ../docker_build.sh
     - stage: build common module
       script:
         - cd udagram-common
@@ -32,10 +35,7 @@ jobs:
         - npm install
         - npm run lint
         - npm run build
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - export TAG=0.0.$TRAVIS_BUILD_NUMBER
-        - docker build -t $DOCKER_USERNAME/$BUILD_DIR:$TAG .
-        - docker push $DOCKER_USERNAME/$BUILD_DIR:$TAG
+        - sh -x ../docker_build.sh
     - stage: build feeds api
       before_script:
         - export BUILD_DIR=udagram-feeds-api
